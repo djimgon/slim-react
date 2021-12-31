@@ -125,7 +125,7 @@ cucumber-smoke:
 cucumber-e2e:
 	docker-compose run --rm cucumber-node-cli yarn e2e
 
-build: build-gateway build-frontend build-api
+build: build-frontend
 
 build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-gateway:${IMAGE_TAG} gateway/docker
@@ -133,15 +133,15 @@ build-gateway:
 build-frontend:
 	docker --log-level=debug build --pull --file=frontend/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-frontend:${IMAGE_TAG} frontend
 
-build-api:
-	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG} api
-	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/auction-api-php-cli:${IMAGE_TAG} api
+#build-api:
+#	docker --log-level=debug build --pull --file=api/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-api:${IMAGE_TAG} api
+#	docker --log-level=debug build --pull --file=api/docker/production/php-fpm/Dockerfile --tag=${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG} api
+#	docker --log-level=debug build --pull --file=api/docker/production/php-cli/Dockerfile --tag=${REGISTRY}/auction-api-php-cli:${IMAGE_TAG} api
 
 try-build:
 	REGISTRY=localhost IMAGE_TAG=0 make build
 
-push: push-gateway push-frontend push-api
+push: push-gateway push-frontend
 
 push-gateway:
 	docker push ${REGISTRY}/auction-gateway:${IMAGE_TAG}
@@ -152,50 +152,15 @@ push-frontend:
 push-api:
 	docker push ${REGISTRY}/auction-api:${IMAGE_TAG}
 	docker push ${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG}
-	docker push ${REGISTRY}/auction-api-php-cli:${IMAGE_TAG}
+#	docker push ${REGISTRY}/auction-api-php-cli:${IMAGE_TAG}
 
-testing-build: testing-build-gateway testing-build-testing-api-php-cli testing-build-cucumber
+testing-build: testing-build-gateway testing-build-cucumber
 
 testing-build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/testing/nginx/Dockerfile --tag=${REGISTRY}/auction-testing-gateway:${IMAGE_TAG} gateway/docker
 
-testing-build-testing-api-php-cli:
-	docker --log-level=debug build --pull --file=api/docker/testing/php-cli/Dockerfile --tag=${REGISTRY}/auction-testing-api-php-cli:${IMAGE_TAG} api
-
 testing-build-cucumber:
 	docker --log-level=debug build --pull --file=cucumber/docker/testing/node/Dockerfile --tag=${REGISTRY}/auction-cucumber-node-cli:${IMAGE_TAG} cucumber
-
-testing-init:
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml up -d
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm api-php-cli wait-for-it api-postgres:5432 -t 60
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm api-php-cli php bin/app.php migrations:migrate --no-interaction
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm testing-api-php-cli php bin/app.php fixtures:load --no-interaction
-
-testing-smoke:
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm cucumber-node-cli yarn smoke
-
-testing-e2e:
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml run --rm cucumber-node-cli yarn e2e
-
-testing-down-clear:
-	COMPOSE_PROJECT_NAME=testing docker-compose -f docker-compose-testing.yml down -v --remove-orphans
-
-try-testing: try-build try-testing-build try-testing-init try-testing-smoke try-testing-e2e try-testing-down-clear
-
-try-testing-build:
-	REGISTRY=localhost IMAGE_TAG=0 make testing-build
-
-try-testing-init:
-	REGISTRY=localhost IMAGE_TAG=0 make testing-init
-
-try-testing-smoke:
-	REGISTRY=localhost IMAGE_TAG=0 make testing-smoke
-
-try-testing-e2e:
-	REGISTRY=localhost IMAGE_TAG=0 make testing-e2e
-
-try-testing-down-clear:
-	REGISTRY=localhost IMAGE_TAG=0 make testing-down-clear
 
 deploy:
 	ssh ${HOST} -p ${PORT} 'rm -rf site_${BUILD_NUMBER}'
@@ -212,9 +177,9 @@ deploy:
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "API_MAILER_FROM_EMAIL=${API_MAILER_FROM_EMAIL}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && echo "SENTRY_DSN=${SENTRY_DSN}" >> .env'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose pull'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build -d api-postgres api-php-cli'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run api-php-cli wait-for-it api-postgres:5432 -t 60'
-	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run api-php-cli php bin/app.php migrations:migrate --no-interaction'
+	#ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build -d api-postgres api-php-cli'
+	#ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run api-php-cli wait-for-it api-postgres:5432 -t 60'
+	#ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose run api-php-cli php bin/app.php migrations:migrate --no-interaction'
 	ssh ${HOST} -p ${PORT} 'cd site_${BUILD_NUMBER} && docker-compose up --build --remove-orphans -d'
 	ssh ${HOST} -p ${PORT} 'rm -f site'
 	ssh ${HOST} -p ${PORT} 'ln -sr site_${BUILD_NUMBER} site'

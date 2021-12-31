@@ -1,28 +1,32 @@
 version: "3.7"
 services:
-  gateway:
-    image: ${REGISTRY}/auction-gateway:${IMAGE_TAG}
-    restart: always
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /var/www/html:/var/www/html:ro
-    ports:
-      - "80:80"
-      - "443:443"
-    depends_on:
-      - frontend
-      - api
+#  gateway:
+#    image: ${REGISTRY}/auction-gateway:${IMAGE_TAG}
+#    restart: always
+#    volumes:
+##      - /etc/letsencrypt:/etc/letsencrypt:ro
+#      - /var/www/html:/var/www/html:ro
+#    ports:
+#      - "80:80"
+##      - "443:443"
+#    depends_on:
+#      - frontend
+##      - api
 
   frontend:
     image: ${REGISTRY}/auction-frontend:${IMAGE_TAG}
     restart: always
+    ports:
+          - "80:80"
+    volumes:
+      - /var/www/html:/var/www/html:ro
 
-  api:
-    image: ${REGISTRY}/auction-api:${IMAGE_TAG}
-    restart: always
-    depends_on:
-      - api-php-fpm
+#  api:
+#    image: ${REGISTRY}/auction-api:${IMAGE_TAG}
+#    restart: always
+#    depends_on:
+#      - api-php-fpm
 
-  api-php-fpm:
-    image: ${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG}
-    restart: always
+#  api-php-fpm:
+#    image: ${REGISTRY}/auction-api-php-fpm:${IMAGE_TAG}
+#    restart: always

@@ -1,4 +1,3 @@
-certbot_email: mail@deworker.pro
+certbot_email: dmitr.goncharov1991@mail.ru
 certbot_hosts:
-  - demo-auction.deworker.pro
-  - api.demo-auction.deworker.pro
+  - new-sert.ru
