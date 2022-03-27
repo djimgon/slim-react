@@ -125,7 +125,7 @@ cucumber-smoke:
 cucumber-e2e:
 	docker-compose run --rm cucumber-node-cli yarn e2e
 
-build: build-frontend
+build: build-gateway build-frontend
 
 build-gateway:
 	docker --log-level=debug build --pull --file=gateway/docker/production/nginx/Dockerfile --tag=${REGISTRY}/auction-gateway:${IMAGE_TAG} gateway/docker
