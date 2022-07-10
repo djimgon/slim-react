@@ -7,7 +7,19 @@ RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 COPY ./common/php/conf.d /usr/local/etc/php/conf.d
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_VERSION 2.0
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
+FROM composer:2.0 as vendor
+
+RUN composer install \
+    --no-interaction \
+    --version=$COMPOSER_VERSION \
+    --no-plugins \
+    --no-scripts \
+    --no-dev \
+    --prefer-dist \
+
+RUN composer global require hirak/prestissimo --no-plugins --no-scripts \
+    && rm -rf /root/.composer/cache
 
 WORKDIR /app
