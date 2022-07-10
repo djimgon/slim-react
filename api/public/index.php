@@ -10,6 +10,8 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = AppFactory::create();
 
+$app->addErrorMiddleware(false, true, true);
+
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write('{}');
     return $response->withHeader('Content-Type', 'application/json');
