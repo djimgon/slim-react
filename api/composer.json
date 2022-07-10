@@ -1,7 +1,12 @@
 {
-    "name": "djimgon/auction-demo",
-    "require": {
-        "php": "7.4"
-    },
-    "license": "BSD-3-Clause"
+  "name": "deworkerpro/demo-auction",
+  "type": "project",
+  "license": "BSD-3-Clause",
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
+  },
+  "require": {
+    "php": "^7.4"
+  }
 }
