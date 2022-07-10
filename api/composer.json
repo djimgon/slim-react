@@ -7,7 +7,9 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^7.4"
+    "php": "^8.0.6",
+    "slim/psr7": "^1.5",
+    "slim/slim": "^4.10"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
