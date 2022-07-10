@@ -11,15 +11,7 @@ ENV COMPOSER_VERSION 2.0
 
 FROM composer:2.0 as vendor
 
-RUN composer install \
-    --no-interaction \
-    --version=$COMPOSER_VERSION \
-    --no-plugins \
-    --no-scripts \
-    --no-dev \
-    --prefer-dist \
-
-RUN composer global require hirak/prestissimo --no-plugins --no-scripts \
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
     && rm -rf /root/.composer/cache
 
 WORKDIR /app
