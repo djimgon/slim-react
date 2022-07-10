@@ -17,9 +17,6 @@ $app = AppFactory::createFromContainer($container);
 
 $app->addErrorMiddleware((bool)getenv('APP_DEBUG'), true, true);
 
-$app->get('/', function (Request $request, Response $response, $args) {
-    $response->getBody()->write('{}');
-    return $response->withHeader('Content-Type', 'application/json');
-});
+$app->get('/',  \App\Http\Action\HomeAction::class);
 
 $app->run();
