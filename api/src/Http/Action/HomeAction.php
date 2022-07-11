@@ -3,7 +3,7 @@
 
 namespace App\Http\Action;
 
-use App\Http;
+use App\Http\JsonResponse;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,7 +21,6 @@ class HomeAction implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $response = $this->factory->createResponse();
-        return Http::json($response, new stdClass());
+        return new JsonResponse(new stdClass());
     }
 }
