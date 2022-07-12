@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Action;
 
 use App\Http\JsonResponse;
