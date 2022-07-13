@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <psalm
-        totallyTyped="true"
         resolveFromConfigFile="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="https://getpsalm.org/schema/config"
@@ -8,6 +7,7 @@
 >
     <projectFiles>
         <directory name="bin" />
+        <file name="bin/app.php" />
         <directory name="config" />
         <directory name="public" />
         <directory name="src" />
