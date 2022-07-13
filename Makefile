@@ -3,6 +3,7 @@ up: docker-up
 down: docker-down
 restart: down up
 lint: api-lint
+check: lint analyze test
 analyze: api-analyze
 test: api-test
 
