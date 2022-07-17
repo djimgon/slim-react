@@ -12,6 +12,7 @@ interface UserRepository
     public function hasByNetwork(NetworkIdentity $identity): bool;
     public function findByJoinConfirmToken(string $token): ?User;
     public function findByNewEmailToken(string $token): ?User;
+    public function remove(User $user): void;
     /**
      * @param Id $id
      * @return User
