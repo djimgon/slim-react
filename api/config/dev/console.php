@@ -8,6 +8,7 @@ return [
     'config' => [
         'console' => [
             'commands' => [
+                SchemaTool\CreateCommand::class,
                 SchemaTool\DropCommand::class,
             ],
         ],
