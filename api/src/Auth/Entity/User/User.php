@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Auth\Entity\User;
 
 use App\Auth\Service\PasswordHasher;
-use ArrayObject;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 
@@ -42,7 +43,6 @@ class User
      * @ORM\Embedded(class="Token")
      */
     private ?Token $joinConfirmToken = null;
-    private ArrayObject $networks;
     /**
      * @ORM\Embedded(class="Token")
      */
@@ -59,6 +59,7 @@ class User
      * @ORM\Column(type="auth_user_role", length=16)
      */
     private Role $role;
+    private Collection $networks;
 
     private function __construct(Id $id, DateTimeImmutable $date, Email $email, Status $status)
     {
@@ -67,17 +68,17 @@ class User
         $this->email = $email;
         $this->status = $status;
         $this->role = Role::user();
-        $this->networks = new ArrayObject();
+        $this->networks = new ArrayCollection();
     }
 
     public static function joinByNetwork(
         Id $id,
         DateTimeImmutable $date,
         Email $email,
-        Network $identity
+        Network $network
     ): self {
         $user = new self($id, $date, $email, Status::active());
-        $user->networks->append($identity);
+        $user->networks->add($network);
         return $user;
     }
 
@@ -104,15 +105,15 @@ class User
         $this->joinConfirmToken = null;
     }
 
-    public function attachNetwork(Network $identity): void
+    public function attachNetwork(Network $network): void
     {
         /** @var Network $existing */
         foreach ($this->networks as $existing) {
-            if ($existing->isEqualTo($identity)) {
+            if ($existing->isEqualTo($network)) {
                 throw new DomainException('Network is already attached.');
             }
         }
-        $this->networks->append($identity);
+        $this->networks->add($network);
     }
 
     public function requestPasswordReset(Token $token, DateTimeImmutable $date): void
@@ -124,6 +125,16 @@ class User
             throw new DomainException('Resetting is already requested.');
         }
         $this->passwordResetToken = $token;
+    }
+
+    public function resetPassword(string $token, DateTimeImmutable $date, string $hash): void
+    {
+        if ($this->passwordResetToken === null) {
+            throw new DomainException('Resetting is not requested.');
+        }
+        $this->passwordResetToken->validate($token, $date);
+        $this->passwordResetToken = null;
+        $this->passwordHash = $hash;
     }
 
     public function changePassword(string $current, string $new, PasswordHasher $hasher): void
@@ -180,11 +191,6 @@ class User
         return $this->status->isWait();
     }
 
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
     public function isActive(): bool
     {
         return $this->status->isActive();
@@ -203,6 +209,11 @@ class User
     public function getEmail(): Email
     {
         return $this->email;
+    }
+
+    public function getRole(): Role
+    {
+        return $this->role;
     }
 
     public function getPasswordHash(): ?string
@@ -236,7 +247,7 @@ class User
     public function getNetworks(): array
     {
         /** @var Network[] */
-        return $this->networks->getArrayCopy();
+        return $this->networks->toArray();
     }
 
     /**
