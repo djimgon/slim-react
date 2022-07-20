@@ -17,7 +17,7 @@ class NetworkIdentityTest extends TestCase
     {
         $network = new Network($name = 'google', $identity = 'google-1');
 
-        self::assertEquals($name, $network->getNetwork());
+        self::assertEquals($name, $network->getName());
         self::assertEquals($identity, $network->getIdentity());
     }
 
