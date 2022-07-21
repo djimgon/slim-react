@@ -12,6 +12,7 @@ return [
             'commands' => [
                 Console\HelloCommand::class,
                 ValidateSchemaCommand::class,
+
                 Migrations\Tools\Console\Command\ExecuteCommand::class,
                 Migrations\Tools\Console\Command\MigrateCommand::class,
                 Migrations\Tools\Console\Command\LatestCommand::class,
