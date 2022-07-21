@@ -3,8 +3,9 @@ up: docker-up
 down: docker-down
 restart: down up
 lint: api-lint
-check: lint analyze test
+check: lint analyze validate-schema test
 analyze: api-analyze
+validate-schema: api-validate-schema
 test: api-test
 test-coverage: api-test-coverage
 test-unit: api-test-unit
@@ -40,6 +41,9 @@ api-composer-install:
 
 api-migrations:
 	docker-compose run --rm api-php-cli composer app migrations:migrate
+
+api-validate-schema:
+	docker-compose run --rm api-php-cli composer app orm:validate-schema
 
 api-composer-update:
 	docker-compose run --rm api-php-cli composer update
