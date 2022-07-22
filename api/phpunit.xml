@@ -11,6 +11,7 @@
     <testsuites>
         <testsuite name="unit">
             <directory suffix="Test.php">src/Auth/Test/Unit</directory>
+            <directory suffix="Test.php">src/Frontend/Test/Unit</directory>
             <directory suffix="Test.php">src/Http/Test/Unit</directory>
         </testsuite>
         <testsuite name="functional">
@@ -20,8 +21,12 @@
 
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory>src/Auth/Test</directory>
-            <directory>src/Http/Test</directory>
+            <directory suffix=".php">src</directory>
+            <exclude>
+                <directory>src/Auth/Test</directory>
+                <directory>src/Frontend/Test</directory>
+                <directory>src/Http/Test</directory>
+            </exclude>
         </whitelist>
     </filter>
 
