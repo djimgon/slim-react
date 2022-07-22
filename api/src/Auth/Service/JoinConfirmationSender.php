@@ -13,7 +13,6 @@ use Swift_Message;
 class JoinConfirmationSender
 {
     private Swift_Mailer $mailer;
-    private array $from;
 
     public function __construct(Swift_Mailer $mailer)
     {
