@@ -33,11 +33,8 @@ class RequestAction implements RequestHandlerInterface
         $command->email = $data['email'] ?? '';
         $command->password = $data['password'] ?? '';
 
-        try {
-            $this->handler->handle($command);
-            return new EmptyResponse(201);
-        } catch (DomainException $exception) {
-            return new JsonResponse(['message' => $exception->getMessage()], 409);
-        }
+        $this->handler->handle($command);
+
+        return new EmptyResponse(201);
     }
 }
