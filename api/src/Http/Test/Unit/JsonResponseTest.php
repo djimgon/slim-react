@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Unit\Http;
+namespace App\Test\Unit\Http;
 
 use App\Http\JsonResponse;
 use PHPUnit\Framework\TestCase;
