@@ -48,7 +48,7 @@ services:
       MAILER_ENCRYPTION: tcp
       MAILER_FROM_EMAIL: mail@app.test
       FRONTEND_URL: http://localhost:8080
-      SENTRY_DSN: https://195d2abfbfd347368f7d97b41bf6e7dc@o1332039.ingest.sentry.io/6596380
+      SENTRY_DSN: null
     volumes:
       - ./api:/app
 
@@ -70,7 +70,7 @@ services:
       MAILER_ENCRYPTION: tcp
       MAILER_FROM_EMAIL: mail@app.test
       FRONTEND_URL: http://localhost:8080
-      SENTRY_DSN: https://195d2abfbfd347368f7d97b41bf6e7dc@o1332039.ingest.sentry.io/6596380
+      SENTRY_DSN: hull
     volumes:
       - ./api:/app
 
