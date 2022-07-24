@@ -19,12 +19,12 @@ class RequestTest extends WebTestCase
     public function testSuccess(): void
     {
         $response = $this->app()->handle(self::json('POST', '/v1/auth/join', [
-            'email' => 'new-user@app.test',
+            'email' => 'new-user2@app.test',
             'password' => 'new-password',
         ]));
 
         self::assertEquals(201, $response->getStatusCode());
-        self::assertEquals('{}', (string)$response->getBody());
+        self::assertEquals('', (string)$response->getBody());
     }
 
     public function testExisting(): void
