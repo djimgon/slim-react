@@ -27,7 +27,7 @@ return [
 
     'config' => [
         'translator' => [
-            'lang' => 'en',
+            'lang' => 'ru',
             'resources' => [
                 [
                     'xlf',
