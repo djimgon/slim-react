@@ -1,9 +1,6 @@
-###
-
 POST http://localhost:8081/v1/auth/join/
-ACCEPT: application/json
+Content-Type: application/json
 
-{
-    "email" : "new-user",
-    "password" : ""
-}
+{"email": "dsfsdfsd", "password": ""}
+
+###
