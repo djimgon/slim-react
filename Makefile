@@ -12,6 +12,7 @@ validate-schema: api-validate-schema
 test: api-test api-fixtures frontend-test
 test-unit: api-test-unit
 test-functional: api-test-functional api-fixtures
+test-e2e: api-fixtures cucumber-e2e
 
 docker-up:
 	docker-compose up -d
@@ -110,6 +111,9 @@ cucumber-init: cucumber-yarn-install
 
 cucumber-yarn-install:
 	docker-compose run --rm cucumber-node-cli yarn install
+
+cucumber-e2e:
+	docker-compose run --rm cucumber-node-cli yarn e2e
 
 api-test-functional-coverage:
 	docker-compose run --rm api-php-cli composer test-coverage -- --testsuite=functional
