@@ -100,6 +100,9 @@ frontend-lint-fix:
 frontend-eslint-fix:
 	docker-compose run --rm frontend-node-cli yarn eslint-fix
 
+frontend-pretty:
+	docker-compose run --rm frontend-node-cli yarn prettier
+
 frontend-test:
 	docker-compose run --rm frontend-node-cli yarn test --watchAll=false
 
