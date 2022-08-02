@@ -5,7 +5,7 @@ init: docker-down-clear \
 up: docker-up
 down: docker-down
 restart: down up
-lint: api-lint
+lint: api-lint frontend-lint
 check: lint analyze validate-schema test
 analyze: api-analyze
 validate-schema: api-validate-schema
@@ -89,6 +89,9 @@ frontend-yarn-install:
 
 frontend-ready:
 	docker run --rm -v ${PWD}/frontend:/app -w /app alpine touch .ready
+
+frontend-lint:
+	docker-compose run --rm frontend-node-cli yarn lint
 
 frontend-test:
 	docker-compose run --rm frontend-node-cli yarn test --watchAll=false
