@@ -109,7 +109,7 @@ pipeline {
                     )
                 ]) {
                     //sh "docker login -u=$USER -p='$PASSWORD' $REGISTRY" вариант для поднятого на vps реестра,
-                    sh "docker login dmitr.goncharov1991@mail.ru" // костыль для докер хаб
+                    sh "docker login -u goohunter -p dh9AgOOo7Ol5hnvZwvws" // костыль для докер хаб
                 }
                 sh "make push"
             }
