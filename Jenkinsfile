@@ -108,8 +108,8 @@ pipeline {
                         passwordVariable: 'PASSWORD'
                     )
                 ]) {
-                    //sh "docker login -u=$USER -p='$PASSWORD' $REGISTRY" вариант для поднятого на vps реестра,
-                    sh "docker login -u goohunter -p dh9AgOOo7Ol5hnvZwvws" // костыль для докер хаб
+                    sh "docker login -u $USER -p $PASSWORD"
+                    //sh "docker login -u goohunter -p dh9AgOOo7Ol5hnvZwvws" // костыль для докер хаб
                 }
                 sh "make push"
             }
