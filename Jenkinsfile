@@ -96,10 +96,28 @@ pipeline {
                 }
             }
         }
+        stage("Push") {
+            when {
+                branch "main"
+            }
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'REGISTRY_AUTH',
+                        usernameVariable: 'USER',
+                        passwordVariable: 'PASSWORD'
+                    )
+                ]) {
+                    sh "docker login -u=$USER -p='$PASSWORD' $REGISTRY"
+                }
+                sh "make push"
+            }
+        }
     }
     post {
         always {
             sh "make docker-down-clear || true"
+            sh "make testing-down-clear || true"
         }
     }
 }
