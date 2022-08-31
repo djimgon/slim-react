@@ -1,8 +1,8 @@
 ---
--   name: Provision Site
-    hosts: site
+-   name: Provision manager
+    hosts: manager
     remote_user: root
     roles:
       - docker
       - certbot
-      - site
+      - swarm-manager
